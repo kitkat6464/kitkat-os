@@ -6,8 +6,10 @@ FROM ghcr.io/zirconium-dev/zirconium:latest@sha256:6eff4cd5629c257f07efbb5ce137a
 
 # Install patched fwupd
 # Install Valve's patched Mesa, Pipewire, Bluez, and Xwayland. From Bazzite's containerfile.
-RUN --mount=type=cache,dst=/var/cache \
+RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
+    --mount=type=cache,dst=/var/cache \
     --mount=type=cache,dst=/var/log \
+    --mount=type=tmpfs,dst=/tmp \
     declare -A toswap=( \
         ["copr:copr.fedorainfracloud.org:bazzite-org:bazzite"]="wireplumber" \
         ["copr:copr.fedorainfracloud.org:bazzite-org:bazzite-multilib"]="pipewire bluez xorg-x11-server-Xwayland" \
@@ -64,9 +66,10 @@ RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
 
 # Install Steam & Lutris, plus supporting packages. From Bazzite's containerfile.
 # Downgrade ibus to fix an issue with the Steam keyboard
-RUN --mount=type=cache,dst=/var/cache \
+RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
+    --mount=type=cache,dst=/var/cache \
     --mount=type=cache,dst=/var/log \
-    --mount=type=secret,id=GITHUB_TOKEN \
+    --mount=type=tmpfs,dst=/tmp \
     dnf5 versionlock add \
         ibus && \
     dnf5 -y install \
