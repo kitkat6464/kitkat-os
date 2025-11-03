@@ -5,7 +5,7 @@ COPY system_files /system_files
 FROM ghcr.io/zirconium-dev/zirconium:latest
 
 # Install patched fwupd
-# Install Valve's patched Mesa, Pipewire, Bluez, and Xwayland
+# Install Valve's patched Mesa, Pipewire, Bluez, and Xwayland. From Bazzite's containerfile.
 RUN --mount=type=cache,dst=/var/cache \
     --mount=type=cache,dst=/var/log \
     declare -A toswap=( \
