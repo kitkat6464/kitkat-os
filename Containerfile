@@ -41,7 +41,7 @@ RUN --mount=type=cache,dst=/var/cache \
     eval "$(/ctx/dnf5-setopt setopt '*negativo17*' priority=4 exclude='mesa-* *xone*')" && \
     dnf5 -y config-manager setopt "*rpmfusion*".priority=5 "*rpmfusion*".exclude="mesa-*" && \
     dnf5 -y config-manager setopt "*fedora*".exclude="mesa-* kernel-core-* kernel-modules-* kernel-uki-virt-*" && \
-    dnf5 -y config-manager setopt "*staging*".exclude="scx-scheds kf6-* mesa* mutter*" && \
+    dnf5 -y config-manager setopt "*staging*".exclude="scx-scheds kf6-* mesa* mutter*"
 
 # Install patched fwupd
 # Install Valve's patched Mesa, Pipewire, Bluez, and Xwayland
@@ -91,7 +91,7 @@ RUN --mount=type=cache,dst=/var/cache \
         libaacs \
         libbdplus \
         libbluray \
-        libbluray-utils && \
+        libbluray-utils
 
 # Install Steam & Lutris, plus supporting packages
 # Downgrade ibus to fix an issue with the Steam keyboard
@@ -127,7 +127,7 @@ RUN --mount=type=cache,dst=/var/cache \
     dnf5 -y remove \
         gamemode && \
     /ctx/ghcurl "https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks" -Lo /usr/bin/winetricks && \
-    chmod +x /usr/bin/winetricks && \
+    chmod +x /usr/bin/winetricks
 
 # Custom Stuff
 RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
