@@ -4,63 +4,12 @@ COPY system_files /system_files
 
 FROM ghcr.io/zirconium-dev/zirconium:latest@sha256:6eff4cd5629c257f07efbb5ce137aa644bb2166913c2eebd9e96f42cfd4bf428
 
-# Install patched fwupd
-# Install Valve's patched Mesa, Pipewire, Bluez, and Xwayland
-RUN --mount=type=cache,dst=/var/cache \
-    --mount=type=cache,dst=/var/log \
-    declare -A toswap=( \
-        ["copr:copr.fedorainfracloud.org:bazzite-org:bazzite"]="wireplumber" \
-        ["copr:copr.fedorainfracloud.org:bazzite-org:bazzite-multilib"]="pipewire bluez xorg-x11-server-Xwayland" \
-        ["terra-mesa"]="mesa-filesystem" \
-        ["copr:copr.fedorainfracloud.org:ublue-os:staging"]="fwupd" \
-    ) && \
-    for repo in "${!toswap[@]}"; do \
-        for package in ${toswap[$repo]}; do dnf5 -y swap --repo=$repo $package $package; done; \
-    done && unset -v toswap repo package && \
-    dnf5 versionlock add \
-        pipewire \
-        pipewire-alsa \
-        pipewire-gstreamer \
-        pipewire-jack-audio-connection-kit \
-        pipewire-jack-audio-connection-kit-libs \
-        pipewire-libs \
-        pipewire-plugin-libcamera \
-        pipewire-pulseaudio \
-        pipewire-utils \
-        wireplumber \
-        wireplumber-libs \
-        bluez \
-        bluez-cups \
-        bluez-libs \
-        bluez-obexd \
-        xorg-x11-server-Xwayland \
-        mesa-dri-drivers \
-        mesa-filesystem \
-        mesa-libEGL \
-        mesa-libGL \
-        mesa-libgbm \
-        mesa-va-drivers \
-        mesa-vulkan-drivers \
-        fwupd \
-        fwupd-plugin-flashrom \
-        fwupd-plugin-modem-manager \
-        fwupd-plugin-uefi-capsule-data && \
-    dnf5 -y install \
-        mesa-va-drivers.i686 \
-        libfreeaptx && \
-    dnf5 -y install --enable-repo="*rpmfusion*" --disable-repo="*fedora-multimedia*" \
-        libaacs \
-        libbdplus \
-        libbluray \
-        libbluray-utils
-
 # Install Steam & Lutris, plus supporting packages
 # Downgrade ibus to fix an issue with the Steam keyboard
-RUN --mount=type=cache,dst=/var/cache \
+RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
+    --mount=type=cache,dst=/var/cache \
     --mount=type=cache,dst=/var/log \
-    --mount=type=secret,id=GITHUB_TOKEN \
-    dnf5 versionlock add \
-        ibus && \
+    --mount=type=tmpfs,dst=/tmp \
     dnf5 -y install \
         gamescope.x86_64 \
         gamescope-libs.x86_64 \
@@ -84,11 +33,7 @@ RUN --mount=type=cache,dst=/var/cache \
         VK_hdr_layer && \
     dnf5 -y --setopt=install_weak_deps=False install \
         steam \
-        lutris && \
-    dnf5 -y remove \
-        gamemode && \
-    /ctx/ghcurl "https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks" -Lo /usr/bin/winetricks && \
-    chmod +x /usr/bin/winetricks
+        lutris
 
 # Custom Stuff
 RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
