@@ -18,6 +18,7 @@ dnf -y install ptyxis
 dnf -y install hyfetch
 dnf -y copr enable atim/starship
 dnf -y install starship
+dnf -y install steam
 
 # Nuke Nautilus from orbit and replace with KDE dialogs (we both agree nautilus sucks)
 dnf install -y xdg-desktop-portal-kde
