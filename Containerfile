@@ -140,7 +140,29 @@ RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     chmod +x /usr/bin/winetricks && \
     /ctx/cleanup
 
-# Custom Stuff
+# Install Addtional Apps
+RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
+    --mount=type=cache,dst=/var/cache \
+    --mount=type=cache,dst=/var/log \
+    --mount=type=tmpfs,dst=/tmp \
+    dnf5 -y install dolphin
+    dnf5 -y install ptyxis
+    dnf5 -y install hyfetch
+    dnf5 -y install xdg-desktop-portal-kde
+    dnf5 -y copr enable atim/starship
+    dnf5 -y install starship
+    /ctx/cleanup
+
+# Nuke Apps
+RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
+    --mount=type=cache,dst=/var/cache \
+    --mount=type=cache,dst=/var/log \
+    --mount=type=tmpfs,dst=/tmp \
+    dnf5 -y remove nautilus
+    dnf5 -y remove ghostty
+    /ctx/cleanup
+
+# Run build.sh for things I need to move over to here
 RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     --mount=type=cache,dst=/var/cache \
     --mount=type=cache,dst=/var/log \

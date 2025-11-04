@@ -4,35 +4,6 @@ set -ouex pipefail
 
 cp -avf "/ctx/system_files"/. /
 
-### Install packages
-
-# Packages can be installed from any enabled yum repo on the image.
-# RPMfusion repos are available by default in ublue main images
-# List of rpmfusion packages can be found here:
-# https://mirrors.rpmfusion.org/mirrorlist?path=free/fedora/updates/39/x86_64/repoview/index.html&protocol=https&redirect=1
-
-# this installs a package from fedora repos
-dnf -y install dolphin
-dnf -y install ptyxis
-dnf -y install hyfetch
-dnf -y copr enable atim/starship
-dnf -y install starship
-
-dnf -y --setopt=install_weak_deps=False install steam
-
-# Nuke Nautilus from orbit and replace with KDE dialogs (we both agree nautilus sucks)
-dnf install -y xdg-desktop-portal-kde
-tee /usr/share/xdg-desktop-portal/niri-portals.conf <<'EOF'
-[preferred]
-default=kde;gnome;
-org.freedesktop.impl.portal.ScreenCast=gnome;
-org.freedesktop.impl.portal.Access=kde;
-org.freedesktop.impl.portal.Notification=kde;
-org.freedesktop.impl.portal.Secret=gnome-keyring;
-EOF
-dnf -y remove nautilus
-dnf -y remove ghostty
-
 #replace Fedora kernel with CachyOS kernel
 for pkg in kernel kernel-core kernel-modules kernel-modules-core; do
   rpm --erase $pkg --nodeps
