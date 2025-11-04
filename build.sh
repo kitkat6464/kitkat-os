@@ -20,6 +20,10 @@ dnf -y copr enable atim/starship
 dnf -y install starship
 dnf -y install steam
 
+# Nuke non flatpak Firefox
+dnf -y remove firefox
+dnf -y remove firefox-langpacks
+
 # Nuke Nautilus from orbit and replace with KDE dialogs (we both agree nautilus sucks)
 dnf install -y xdg-desktop-portal-kde
 tee /usr/share/xdg-desktop-portal/niri-portals.conf <<'EOF'
