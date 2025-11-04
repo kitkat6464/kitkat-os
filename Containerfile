@@ -1,13 +1,15 @@
 FROM scratch AS ctx
 COPY build.sh /build.sh
+COPY build_files /build_files
 COPY system_files /system_files
-COPY ./build_files/cleanup ./build_files/ghcurl ./build_files/dnf5-setopt ./build_files/dnf5-search /ctx/
 
 FROM ghcr.io/zirconium-dev/zirconium:latest@sha256:33baa6fc3068f155d49571b2ce4e35fa3ef640e9bf73b84352228ffdf1e8e4d2
 
 # Setup Copr repos
-RUN --mount=type=cache,dst=/var/cache \
+RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
+    --mount=type=cache,dst=/var/cache \
     --mount=type=cache,dst=/var/log \
+    --mount=type=tmpfs,dst=/tmp \
     mkdir -p /var/roothome && \
     dnf5 -y install dnf5-plugins && \
     for copr in \
@@ -43,8 +45,10 @@ RUN --mount=type=cache,dst=/var/cache \
 
 # Install patched fwupd
 # Install Valve's patched Mesa, Pipewire, Bluez, and Xwayland
-RUN --mount=type=cache,dst=/var/cache \
+RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
+    --mount=type=cache,dst=/var/cache \
     --mount=type=cache,dst=/var/log \
+    --mount=type=tmpfs,dst=/tmp \
     declare -A toswap=( \
         ["copr:copr.fedorainfracloud.org:bazzite-org:bazzite"]="wireplumber" \
         ["copr:copr.fedorainfracloud.org:bazzite-org:bazzite-multilib"]="pipewire bluez xorg-x11-server-Xwayland" \
@@ -92,8 +96,10 @@ RUN --mount=type=cache,dst=/var/cache \
         libbluray-utils && \
     /ctx/cleanup
 
-RUN --mount=type=cache,dst=/var/cache \
+RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
+    --mount=type=cache,dst=/var/cache \
     --mount=type=cache,dst=/var/log \
+    --mount=type=tmpfs,dst=/tmp \
     --mount=type=secret,id=GITHUB_TOKEN \
     dnf5 versionlock add \
         ibus && \
