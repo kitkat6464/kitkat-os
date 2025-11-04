@@ -20,9 +20,9 @@ dnf -y copr enable atim/starship
 dnf -y install starship
 
 # this installs gaming packages
-dnf versionlock add \
+dnf5 versionlock add \
         ibus && \
-dnf -y install \
+dnf5 -y install \
         gamescope.x86_64 \
         gamescope-libs.x86_64 \
         gamescope-libs.i686 \
@@ -43,10 +43,10 @@ dnf -y install \
         libobs_vkcapture.i686 \
         libobs_glcapture.i686 \
         VK_hdr_layer && \
-dnf -y --setopt=install_weak_deps=False install \
+dnf5 -y --setopt=install_weak_deps=False install \
         steam \
         lutris && \
-dnf -y remove \
+dnf5 -y remove \
         gamemode && \
 curl "https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks" -Lo /usr/bin/winetricks && \
 chmod +x /usr/bin/winetricks
