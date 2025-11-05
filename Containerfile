@@ -39,10 +39,14 @@ RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     dnf5 -y install \
         https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
         https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm && \
+    sed -i 's@enabled=0@enabled=1@g' /etc/yum.repos.d/negativo17-fedora-multimedia.repo && \
+    dnf5 -y config-manager addrepo --from-repofile=https://negativo17.org/repos/fedora-steam.repo && \
+    dnf5 -y config-manager addrepo --from-repofile=https://negativo17.org/repos/fedora-rar.repo && \
     dnf5 -y config-manager setopt "*bazzite*".priority=1 && \
     dnf5 -y config-manager setopt "*terra*".priority=3 "*terra*".exclude="nerd-fonts topgrade scx-scheds steam python3-protobuf" && \
     dnf5 -y config-manager setopt "terra-mesa".enabled=true && \
     dnf5 -y config-manager setopt "terra-nvidia".enabled=false && \
+    eval "$(/ctx/dnf5-setopt setopt '*negativo17*' priority=4 exclude='mesa-* *xone*')" && \
     dnf5 -y config-manager setopt "*rpmfusion*".priority=5 "*rpmfusion*".exclude="mesa-*" && \
     dnf5 -y config-manager setopt "*fedora*".exclude="mesa-* kernel-core-* kernel-modules-* kernel-uki-virt-*" && \
     dnf5 -y config-manager setopt "*staging*".exclude="scx-scheds kf6-* mesa* mutter*" && \
@@ -99,6 +103,121 @@ RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
         libbdplus \
         libbluray \
         libbluray-utils && \
+    /ctx/cleanup
+
+# Install new packages
+RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
+    --mount=type=cache,dst=/var/cache \
+    --mount=type=cache,dst=/var/log \
+    --mount=type=tmpfs,dst=/tmp \
+    --mount=type=secret,id=GITHUB_TOKEN \
+    dnf5 -y install \
+        $(/ctx/ghcurl https://api.github.com/repos/bazzite-org/cicpoffs/releases/latest | jq -r '.assets[] | select(.name| test(".*rpm$")).browser_download_url') && \
+    dnf5 -y install \
+        bazaar \
+        iwd \
+        twitter-twemoji-fonts \
+        google-noto-sans-cjk-fonts \
+        lato-fonts \
+        fira-code-fonts \
+        nerd-fonts \
+        Sunshine \
+        python3-pip \
+        libadwaita \
+        duperemove \
+        cpulimit \
+        sqlite \
+        xwininfo \
+        xrandr \
+        compsize \
+        ryzenadj \
+        ddcutil \
+        input-remapper \
+        libinput-utils \
+        i2c-tools \
+        lm_sensors \
+        fw-ectool \
+        fw-fanctrl \
+        udica \
+        ladspa-caps-plugins \
+        ladspa-noise-suppression-for-voice \
+        pipewire-module-filter-chain-sofa \
+        python3-icoextract \
+        tailscale \
+        webapp-manager \
+        btop \
+        duf \
+        fish \
+        lshw \
+        xdotool \
+        wmctrl \
+        libcec \
+        yad \
+        f3 \
+        pulseaudio-utils \
+        lzip \
+        p7zip \
+        p7zip-plugins \
+        rar \
+        libxcrypt-compat \
+        vulkan-tools \
+        xwiimote-ng \
+        fastfetch \
+        glow \
+        gum \
+        vim \
+        cockpit-networkmanager \
+        cockpit-podman \
+        cockpit-selinux \
+        cockpit-system \
+        cockpit-files \
+        cockpit-storaged \
+        topgrade \
+        ydotool \
+        stress-ng \
+        snapper \
+        btrfs-assistant \
+        edk2-ovmf \
+        qemu \
+        libvirt \
+        lsb_release \
+        uupd \
+        ds-inhibit \
+        rocm-hip \
+        rocm-opencl \
+        rocm-clinfo \
+        waydroid \
+        cage \
+        wlr-randr && \
+    systemctl mask iscsi && \
+    mkdir -p /usr/lib/extest/ && \
+    /ctx/ghcurl "$(/ctx/ghcurl https://api.github.com/repos/bazzite-org/extest/releases/latest | jq -r '.assets[] | select(.name| test(".*so$")).browser_download_url')" -Lo /usr/lib/extest/libextest.so && \
+    /ctx/ghcurl "$(/ctx/ghcurl https://api.github.com/repos/FrameworkComputer/framework-system/releases/latest | jq -r '.assets[] | select(.name == "framework_tool").browser_download_url')" -Lo /usr/bin/framework_tool && \
+    chmod +x /usr/bin/framework_tool && \
+    /ctx/ghcurl "$(/ctx/ghcurl https://api.github.com/repos/HikariKnight/ls-iommu/releases/latest | jq -r '.assets[] | select(.name| test(".*x86_64.tar.gz$")).browser_download_url')" -Lo /tmp/ls-iommu.tar.gz && \
+    mkdir -p /tmp/ls-iommu && \
+    sed -i 's|uupd|& --disable-module-distrobox|' /usr/lib/systemd/system/uupd.service && \
+    setcap 'cap_sys_admin+p' $(readlink -f /usr/bin/sunshine) && \
+    dnf5 -y --setopt=install_weak_deps=False install \
+        rocm-hip \
+        rocm-opencl \
+        rocm-clinfo \
+        rocm-smi && \
+    mkdir -p /etc/xdg/autostart && \
+    sed -i~ -E 's/=.\$\(command -v (nft|ip6?tables-legacy).*/=/g' /usr/lib/waydroid/data/scripts/waydroid-net.sh && \
+    sed -i 's/ --xdg-runtime=\\"${XDG_RUNTIME_DIR}\\"//g' /usr/bin/btrfs-assistant-launcher && \
+    /ctx/ghcurl "https://raw.githubusercontent.com/bazzite-org/steam-proton-mf-wmv/master/installcab.py" -Lo /usr/bin/installcab && \
+    chmod +x /usr/bin/installcab && \
+    /ctx/ghcurl "https://raw.githubusercontent.com/bazzite-org/steam-proton-mf-wmv/refs/heads/master/install-mf-wmv.sh" -Lo /usr/bin/install-mf-wmv && \
+    chmod +x /usr/bin/install-mf-wmv && \
+    tar --no-same-owner --no-same-permissions --no-overwrite-dir -xvzf /tmp/ls-iommu.tar.gz -C /tmp/ls-iommu && \
+    rm -f /tmp/ls-iommu.tar.gz && \
+    cp -r /tmp/ls-iommu/ls-iommu /usr/bin/ && \
+    /ctx/ghcurl "https://github.com/HikariKnight/ScopeBuddy/archive/refs/tags/$(/ctx/ghcurl https://api.github.com/repos/HikariKnight/scopebuddy/releases/latest | jq -r '.tag_name').tar.gz" -Lo /tmp/scopebuddy.tar.gz && \
+    mkdir -p /tmp/scopebuddy && \
+    tar --no-same-owner --no-same-permissions --no-overwrite-dir -xvzf /tmp/scopebuddy.tar.gz -C /tmp/scopebuddy && \
+    rm -f /tmp/scopebuddy.tar.gz && \
+    cp -r /tmp/scopebuddy/ScopeBuddy-*/bin/* /usr/bin/ && \
     /ctx/cleanup
 
 # Install Steam & Lutris, plus supporting packages
