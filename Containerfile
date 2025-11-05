@@ -8,7 +8,7 @@ COPY dnf5-search /dnf5-search
 COPY build.sh /build.sh
 COPY system_files /system_files
 
-FROM ghcr.io/zirconium-dev/zirconium:latest@sha256:33baa6fc3068f155d49571b2ce4e35fa3ef640e9bf73b84352228ffdf1e8e4d2
+FROM ghcr.io/zirconium-dev/zirconium:latest@sha256:75a9c3f7fae37c56e79d0855bfbf6a4a42d03028ada147ba5793e63c06eae6c5
 
 RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     --mount=type=cache,dst=/var/cache \
