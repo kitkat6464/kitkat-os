@@ -121,6 +121,7 @@ systemctl enable --global gnome-keyring-daemon.service
 systemctl enable --global plasma-polkit-agent.service
 systemctl enable --global udiskie.service
 systemctl enable --global xwayland-satellite.service
+systemctl enable --global dms-greeter-folder-create.service
 systemctl preset --global cliphist
 systemctl preset --global plasma-polkit-agent
 systemctl preset --global udiskie
