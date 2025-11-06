@@ -13,21 +13,21 @@ dnf remove -y kde-cli-tools kde-gtk-config || true
 dnf remove -y kde-settings* plasma* kwin* kde-cli* kde-gtk* || true
 
 #install niri
-dnf -y copr enable yalter/niri-git
-dnf -y copr disable yalter/niri-git
-echo "priority=1" | tee -a /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:yalter:niri-git.repo
-dnf -y --enablerepo copr:copr.fedorainfracloud.org:yalter:niri-git install niri
+dnf -y copr enable yalter/niri
+dnf -y copr disable yalter/niri
+echo "priority=1" | tee -a /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:yalter:niri.repo
+dnf -y --enablerepo copr:copr.fedorainfracloud.org:yalter:niri install niri
 
 #install dank linux
 dnf -y copr enable avengemedia/danklinux
 dnf -y copr disable avengemedia/danklinux
-dnf -y --enablerepo copr:copr.fedorainfracloud.org:avengemedia:danklinux install quickshell-git
+dnf -y --enablerepo copr:copr.fedorainfracloud.org:avengemedia:danklinux install quickshell
 
 #install dms
-dnf -y copr enable avengemedia/dms-git
-dnf -y copr disable avengemedia/dms-git
+dnf -y copr enable avengemedia/dms
+dnf -y copr disable avengemedia/dms
 dnf -y \
-    --enablerepo copr:copr.fedorainfracloud.org:avengemedia:dms-git \
+    --enablerepo copr:copr.fedorainfracloud.org:avengemedia:dms \
     --enablerepo copr:copr.fedorainfracloud.org:avengemedia:danklinux \
     install --setopt=install_weak_deps=False \
     dms \
