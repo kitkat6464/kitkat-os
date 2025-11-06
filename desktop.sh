@@ -2,6 +2,8 @@
 
 set -xeuo pipefail
 
+cp -avf "/ctx/system_files"/. /
+
 #nuke kde and sddm
 systemctl disable sddm.service
 dnf remove @kde-* kf5* kf6* plasma* qt5* qt6* sddm*
