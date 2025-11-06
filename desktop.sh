@@ -143,6 +143,13 @@ LATEST_RELEASE_FONT="$(curl "https://api.github.com/repos/subframe7536/maple-fon
 curl -fSsLo "${MAPLE_TMPDIR}/maple.zip" "${LATEST_RELEASE_FONT}"
 unzip "${MAPLE_TMPDIR}/maple.zip" -d "/usr/share/fonts/Maple Mono"
 
+#borrowing a rice for now
+git clone "https://github.com/zirconium-dev/zdots.git" /usr/share/zirconium/zdots
+install -d /etc/niri/
+cp -f /usr/share/zirconium/zdots/dot_config/niri/config.kdl /etc/niri/config.kdl
+file /etc/niri/config.kdl | grep -F -e "empty" -v
+stat /etc/niri/config.kdl
+
 #will add stuff as I learn
 
 #clean that dnf up
