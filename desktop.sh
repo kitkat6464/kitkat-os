@@ -6,8 +6,11 @@ cp -avf "/ctx/system_files"/. /
 
 #nuke kde and sddm
 systemctl disable sddm.service
-dnf remove @kde-* kf5* kf6* plasma* qt5* qt6* sddm*
-dnf clean all
+dnf remove -y kde-settings kde-settings-pulseaudio kde-settings-minimal || true
+dnf remove -y plasma-workspace plasma-desktop sddm plasma-systemsettings || true
+dnf remove -y kwin kwin-wayland kwin-x11 || true
+dnf remove -y kde-cli-tools kde-gtk-config || true
+dnf remove -y kde-settings* plasma* kwin* kde-cli* kde-gtk* || true
 
 #install niri
 dnf -y copr enable yalter/niri-git
