@@ -3,7 +3,6 @@ FROM scratch AS ctx
 COPY system_files /system_files
 
 COPY desktop.sh /desktop.sh
-COPY kernel.sh /kernel.sh
 COPY cleanup /cleanup
 
 FROM ghcr.io/kitkat6464/aloy:latest
