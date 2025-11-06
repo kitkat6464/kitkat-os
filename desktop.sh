@@ -51,6 +51,7 @@ sed -i '/gnome_keyring.so/ s/-auth/auth/ ; /gnome_keyring.so/ s/-session/session
 cat /etc/pam.d/greetd
 
 systemctl enable greetd
+systemctl enable dms-greeter-folder-create.service
 
 #install packages. we run and remove any on this list if its preinstalled.
 dnf -y install \
@@ -121,7 +122,6 @@ systemctl enable --global gnome-keyring-daemon.service
 systemctl enable --global plasma-polkit-agent.service
 systemctl enable --global udiskie.service
 systemctl enable --global xwayland-satellite.service
-systemctl enable --global dms-greeter-folder-create.service
 systemctl preset --global cliphist
 systemctl preset --global plasma-polkit-agent
 systemctl preset --global udiskie
