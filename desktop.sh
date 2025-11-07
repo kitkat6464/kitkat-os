@@ -8,11 +8,11 @@ install -d /usr/share/kitkat/
 
 #nuke kde, sddm and xwaylandvideobridge
 systemctl disable sddm.service
-dnf remove -y kde-settings kde-settings-pulseaudio kde-settings-minimal || true
-dnf remove -y plasma-workspace plasma-desktop sddm plasma-systemsettings || true
-dnf remove -y kwin kwin-wayland kwin-x11 || true
+dnf remove -y kde-settings kde-settings-pulseaudio || true
+dnf remove -y sddm plasma-systemsettings || true
+dnf remove -y kwin || true
 dnf remove -y kde-cli-tools kde-gtk-config || true
-dnf remove -y kde-settings* plasma* kwin* kde-cli* kde-gtk* || true
+dnf remove -y plasma* kwin* || true
 dnf remove -y xwaylandvideobridge || true
 
 #install niri
@@ -61,39 +61,17 @@ dnf -y install \
     brightnessctl \
     cava \
     chezmoi \
-    ddcutil \
-    fastfetch \
-    flatpak \
-    fpaste \
-    fzf \
-    git-core \
     glycin-thumbnailer \
     gnome-keyring \
-    greetd \
-    greetd-selinux \
-    input-remapper \
-    just \
-    dolphin \
-    orca \
-    pipewire \
-    steam-devices \
     tuigreet \
     udiskie \
     webp-pixbuf-loader \
-    wireplumber \
-    wl-clipboard \
     wlsunset \
     xdg-desktop-portal-gnome \
-    xdg-desktop-portal-kde \
-    xdg-user-dirs \
-    xwayland-satellite
 
 dnf install -y --setopt=install_weak_deps=False \
-    kf6-kirigami \
     qt6ct \
-    polkit-kde \
     plasma-breeze \
-    kf6-qqc2-desktop-style
 
 #session target thing
 sed -i "s/After=.*/After=graphical-session.target/" /usr/lib/systemd/user/plasma-polkit-agent.service
@@ -136,10 +114,6 @@ systemctl preset --global xwayland-satellite
 
 #fonts
 dnf install -y \
-    default-fonts-core-emoji \
-    google-noto-color-emoji-fonts \
-    google-noto-emoji-fonts \
-    glibc-all-langpacks \
     default-fonts
 
 mkdir -p "/usr/share/fonts/Maple Mono"
