@@ -118,8 +118,6 @@ add_wants_niri udiskie.service
 add_wants_niri xwayland-satellite.service
 cat /usr/lib/systemd/user/niri.service
 
-cp -avf "/ctx/files"/. /
-
 systemctl enable --global chezmoi-init.service
 systemctl enable --global chezmoi-update.timer
 systemctl enable --global dms.service
