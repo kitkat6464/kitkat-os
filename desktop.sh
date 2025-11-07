@@ -4,6 +4,8 @@ set -xeuo pipefail
 
 cp -avf "/ctx/system_files"/. /
 
+install -d /usr/share/kitkat/
+
 #nuke kde, sddm and xwaylandvideobridge
 systemctl disable sddm.service
 dnf remove -y kde-settings kde-settings-pulseaudio kde-settings-minimal || true
@@ -116,6 +118,10 @@ add_wants_niri udiskie.service
 add_wants_niri xwayland-satellite.service
 cat /usr/lib/systemd/user/niri.service
 
+cp -avf "/ctx/files"/. /
+
+systemctl enable --global chezmoi-init.service
+systemctl enable --global chezmoi-update.timer
 systemctl enable --global dms.service
 systemctl enable --global cliphist.service
 systemctl enable --global gnome-keyring-daemon.socket
@@ -123,6 +129,8 @@ systemctl enable --global gnome-keyring-daemon.service
 systemctl enable --global plasma-polkit-agent.service
 systemctl enable --global udiskie.service
 systemctl enable --global xwayland-satellite.service
+systemctl preset --global chezmoi-init
+systemctl preset --global chezmoi-update
 systemctl preset --global cliphist
 systemctl preset --global plasma-polkit-agent
 systemctl preset --global udiskie
@@ -146,9 +154,9 @@ curl -fSsLo "${MAPLE_TMPDIR}/maple.zip" "${LATEST_RELEASE_FONT}"
 unzip "${MAPLE_TMPDIR}/maple.zip" -d "/usr/share/fonts/Maple Mono"
 
 #borrowing a rice for now
-git clone "https://github.com/zirconium-dev/zdots.git" /usr/share/zirconium/zdots
+git clone "https://github.com/zirconium-dev/zdots.git" /usr/share/kitkat/zdots
 install -d /etc/niri/
-cp -f /usr/share/zirconium/zdots/dot_config/niri/config.kdl /etc/niri/config.kdl
+cp -f /usr/share/kitkat/zdots/dot_config/niri/config.kdl /etc/niri/config.kdl
 file /etc/niri/config.kdl | grep -F -e "empty" -v
 stat /etc/niri/config.kdl
 

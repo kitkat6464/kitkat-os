@@ -1,0 +1,12 @@
+[Unit]
+Description=Initializes Chezmoi if directory is missing
+ConditionPathExists=!%h/.config/kitkat/chezmoi
+
+[Service]
+ExecStart=mkdir -p %h/.config/kitkat/chezmoi
+ExecStart=touch %h/.config/kitkat/chezmoi/chezmoi.toml
+ExecStart=chezmoi apply -S /usr/share/kitkat/zdots --config %h/.config/kitkat/chezmoi/chezmoi.toml
+Type=oneshot
+
+[Install]
+WantedBy=default.target
