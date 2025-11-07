@@ -4,5 +4,5 @@ Description=Chezmoi Update
 [Service]
 ExecStart=mkdir -p %h/.config/kitkat/chezmoi
 ExecStart=touch %h/.config/kitkat/chezmoi/chezmoi.toml
-ExecStart=sh -c 'yes s | chezmoi apply --no-tty --keep-going -S /usr/share/kitkat/zdots --verbose --config %h/.config/kitkat/chezmoi/chezmoi.toml'
+ExecStart=sh -c 'yes s | chezmoi apply --no-tty --keep-going -S /usr/share/kitkat/dots --verbose --config %h/.config/kitkat/chezmoi/chezmoi.toml'
 Type=oneshot
