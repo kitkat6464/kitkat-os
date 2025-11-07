@@ -151,15 +151,11 @@ LATEST_RELEASE_FONT="$(curl "https://api.github.com/repos/subframe7536/maple-fon
 curl -fSsLo "${MAPLE_TMPDIR}/maple.zip" "${LATEST_RELEASE_FONT}"
 unzip "${MAPLE_TMPDIR}/maple.zip" -d "/usr/share/fonts/Maple Mono"
 
-#borrowing a rice for now
-git clone "https://github.com/zirconium-dev/zdots.git" /usr/share/kitkat/zdots
-install -d /etc/niri/
-cp -f /usr/share/kitkat/zdots/dot_config/niri/config.kdl /etc/niri/config.kdl
-file /etc/niri/config.kdl | grep -F -e "empty" -v
-stat /etc/niri/config.kdl
+#add back in the future
+#git clone "https://github.com/kitkat6464/dots.git" /usr/share/kitkat/dots
+#install -d /etc/niri/
+#cp -f /usr/share/kitkat/dots/dot_config/niri/config.kdl /etc/niri/config.kdl
+#file /etc/niri/config.kdl | grep -F -e "empty" -v
+#stat /etc/niri/config.kdl
 
 #will add stuff as I learn
-
-#clean that dnf up
-dnf5 clean all
-rm -rf /var/cache/dnf/*
