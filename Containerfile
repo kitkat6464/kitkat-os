@@ -5,7 +5,7 @@ COPY system_files /system_files
 COPY desktop.sh /desktop.sh
 COPY cleanup /cleanup
 
-FROM ghcr.io/kitkat6464/aloy:latest@sha256:423e83c8cf025b8902b76d9ae6ed8e5b8561d69d778d087fe14624258c635ad6
+FROM ghcr.io/kitkat6464/aloy:latest@sha256:dde96d3809ba8bd6776061463c7ef8253269566cbbb601982b8b74029bb839fa
 
 RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     --mount=type=cache,dst=/var/cache \
