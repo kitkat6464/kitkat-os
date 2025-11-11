@@ -10,12 +10,7 @@ set -xeuo pipefail
 systemctl disable sddm.service
 dnf5 remove -y sddm
 
-dnf5 group info kde-desktop | \
-    sed -n '/^Mandatory packages\s*:/,/^\(Default\|Optional\) packages\s*:/ {
-        /^\(Default\|Optional\) packages\s*:/q  # Quit if we hit Default/Optional header
-        s/^.*:[[:space:]]*//p
-    }' | \
-    xargs dnf5 remove -y
+dnf5 group remove @kde-desktop-environment
     
 dnf5 remove -y xwaylandvideobridge
 
