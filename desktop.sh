@@ -46,13 +46,13 @@ dnf5 -y --enablerepo copr:copr.fedorainfracloud.org:avengemedia:dms install \
     dms-greeter
 
 #install greetd
-dnf5 -y --skip-unavailable install \
+dnf5 -y install --skip-unavailable\
     greetd \
     tuigreet \
     greetd-selinux \
 
 #install basic utils
-dnf5 -y --skip-unavailable install \
+dnf5 -y install --skip-unavailable\
     polkit-kde \
     brightnessctl \
     cava \
@@ -64,7 +64,7 @@ dnf5 -y --skip-unavailable install \
     xwayland-satellite
 
 #install theming stuff
-dnf5 -y --skip-unavailable install \
+dnf5 -y install --skip-unavailable\
     adw-gtk3-theme \
     nwg-look \
     qt6-qtmultimedia \
@@ -72,7 +72,7 @@ dnf5 -y --skip-unavailable install \
     qt5ct
 
 #portals, more xdgs, and dolphin
-dnf5 -y --skip-unavailable install \
+dnf5 -y install --skip-unavailable \
     xdg-desktop-portal-gnome \
     xdg-desktop-portal-gtk \
     xdg-desktop-portal-kde \
