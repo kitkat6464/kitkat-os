@@ -3,7 +3,7 @@ FROM scratch AS ctx
 COPY desktop.sh /desktop.sh
 COPY cleanup /cleanup
 
-FROM ghcr.io/kitkat6464/aloy:latest@sha256:dde96d3809ba8bd6776061463c7ef8253269566cbbb601982b8b74029bb839fa
+FROM ghcr.io/kitkat6464/aloy:latest@sha256:8cbf542c89613f9de61846a0db8d56882113fe8756670017051cfbaf643ac549
 
 RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     --mount=type=cache,dst=/var/cache \
