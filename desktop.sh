@@ -8,10 +8,16 @@ set -xeuo pipefail
 
 #nuke kde, sddm, and xwaylandvideobridge
 systemctl disable sddm.service
-dnf5 remove -y @kde-desktop
 dnf5 remove -y sddm
+
+dnf5 group info kde-desktop | \
+    sed -n '/^Mandatory packages\s*:/,/^\(Default\|Optional\) packages\s*:/ {
+        /^\(Default\|Optional\) packages\s*:/q  # Quit if we hit Default/Optional header
+        s/^.*:[[:space:]]*//p
+    }' | \
+    xargs dnf5 remove -y
+    
 dnf5 remove -y xwaylandvideobridge
-dnf5 -y autoremove
 
 #install niri
 dnf5 -y copr enable yalter/niri
