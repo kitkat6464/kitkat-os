@@ -10,7 +10,9 @@ set -xeuo pipefail
 systemctl disable sddm.service
 dnf5 remove -y sddm
 
-dnf5 group remove @kde-desktop-environment
+dnf5 group remove "KDE Plasma Workspaces"
+dnf5 group remove kde-desktop-environment
+dnf5 remove @kde-desktop-environment
     
 dnf5 remove -y xwaylandvideobridge
 
