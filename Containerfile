@@ -1,7 +1,5 @@
 FROM scratch AS ctx
 
-COPY system_files /system_files
-
 COPY desktop.sh /desktop.sh
 COPY cleanup /cleanup
 
