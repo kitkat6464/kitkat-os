@@ -1,0 +1,4 @@
+enable dms.service
+enable cliphist.service
+enable xwayland-satellite.service
+enable plasma-polkit-agent.service
